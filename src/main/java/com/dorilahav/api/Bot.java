@@ -17,6 +17,8 @@ import net.dv8tion.jda.core.JDA.Status;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.PrivateChannel;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
@@ -218,6 +220,19 @@ public class Bot {
 	private void onlineCheck() {
 		if (!isOnline())
 			throw new IllegalStateException("Bot is down.");
+	}
+	
+	/**
+	 * Opens a {@link PrivateChannel}. Returns null if an exception was thrown.
+	 * @param user the user to open the {@link PrivateChannel} with.
+	 * @return the opened {@link PrivateChannel}.
+	 */
+	public PrivateChannel getPrivateChannel(User user) {
+		try {
+			return user.openPrivateChannel().complete();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }
