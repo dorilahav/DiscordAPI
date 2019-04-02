@@ -3,8 +3,7 @@ package com.dorilahav.api.data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import com.google.gson.JsonObject;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,16 +24,8 @@ public class SqlDatabase {
 		username,
 		password;
 
-	/*public Database(String ip, String port, String dbName, String username, String password) {
-		this.ip = ip;
-		this.port = port;
-		this.dbName = dbName;
-		this.username = username;
-		this.password = password;
-	} */
-	
-	public SqlDatabase(JsonObject information) {
-		this(information.get("hostname").getAsString(), information.get("port").getAsString(), information.get("database").getAsString(), information.get("username").getAsString(), information.get("password").getAsString());
+	public SqlDatabase(Map<String, String> information) {
+		this(information.get("hostname"), information.get("port"), information.get("database"), information.get("username"), information.get("password"));
 	}
 	
 	public void connect() throws SQLException {
