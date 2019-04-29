@@ -415,9 +415,13 @@ public class AEmbed implements Cloneable {
 		else
 			action = channel.sendMessage(text).embed(build());
 		
-		Message message = action.complete();
+		Message message = null;
+		try {
+			message = action.complete();
+		} catch (Exception e) {
+		}
 		
-		if (reactions != null)
+		if (message != null && reactions != null)
 			for (String reaction : reactions)
 				message.addReaction(reaction).complete();
 		
