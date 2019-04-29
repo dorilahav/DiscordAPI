@@ -2,6 +2,7 @@ package com.dorilahav.api.utils;
 
 import java.util.Arrays;
 
+@Deprecated
 public class UnicodeUtils {
 	
 	public static String[]
