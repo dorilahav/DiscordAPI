@@ -1,23 +1,23 @@
 package com.dorilahav.api.commands;
 
 import java.lang.reflect.Method;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.dorilahav.api.chat.Usages;
 
+import lombok.Getter;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
 
 public class CommandHandler {
 	
-	private Map<String, Entry<CommandExecutor, CommandType>>
-			commands = new HashMap<>();
+	@Getter
+	private List<CommandWrapper>
+			commands = new CopyOnWriteArrayList<>();
 	
 		
 	public void registerCommand(Object object) {
@@ -28,15 +28,12 @@ public class CommandHandler {
 			Command command = method.getDeclaredAnnotation(Command.class);
 			CommandExecutor executor = new CommandExecutor(method, object, command.processFlags());
 			
-			Entry<CommandExecutor, CommandType> cmd = new SimpleEntry<>(executor, command.type());
-			commands.put(command.label().toLowerCase(), cmd);
+			CommandWrapper wrapper = new CommandWrapper(command.label().toLowerCase(), Arrays.stream(command.aliases()).map(s -> s.toLowerCase()).collect(Collectors.toList()), executor, command.type());
+			commands.add(wrapper);
 			
-			if (!command.usage().isEmpty())
-				Usages.set(command.label(), command.usage());
-			
-			for (String alias : command.aliases()) {
-				commands.put(alias.toLowerCase(), cmd);
-				if (!command.usage().isEmpty())
+			if (!command.usage().isEmpty()) {
+				Usages.set(wrapper.getLabel(), command.usage());
+				for (String alias : wrapper.getAliases())
 					Usages.set(alias, command.usage());
 			}
 			
@@ -52,7 +49,11 @@ public class CommandHandler {
 	}
 	
 	public boolean isCommand(String label) {
-		return commands.containsKey(label);
+		
+		if (label == null)
+			return false;
+		
+		return commands.stream().anyMatch(wrapper -> wrapper.getLabel().equals(label) || wrapper.getAliases().contains(label.toLowerCase()));
 	}
 
 	public String getLabel(Message message, String prefix) {
@@ -74,10 +75,13 @@ public class CommandHandler {
 		if (!isCommand(label))
 			return false;
 		
-		Entry<CommandExecutor, CommandType> cmd = commands.get(label);
+		CommandWrapper cmd = commands.stream().filter(wrapper -> wrapper.getLabel().equals(label) || wrapper.getAliases().contains(label)).limit(1).findFirst().orElse(null);
+		if (cmd == null)
+			return false;
+		
 		boolean execute = false;
 		
-		switch (cmd.getValue()) {
+		switch (cmd.getCommandType()) {
 		
 			case PRIVATE:
 				if (message.isFromType(ChannelType.PRIVATE))
@@ -111,7 +115,7 @@ public class CommandHandler {
 		if (content.isEmpty() || args == null)
 			args = new String[0];
 		
-		return cmd.getKey().run(message, prefix, label, args);
+		return cmd.getCommandExecutor().run(message, prefix, label, args);
 	}
 
 }
