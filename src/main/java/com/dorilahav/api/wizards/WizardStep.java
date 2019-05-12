@@ -12,7 +12,6 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.events.message.GenericMessageEvent;
 
-@RequiredArgsConstructor(onConstructor = @_({ @ConstructorProperties(value = { "name", "embed", "eventClass", "valueClass", "pointer" }) }))
 public class WizardStep<E extends GenericMessageEvent, V> {
 	
 	@Getter
@@ -41,6 +40,15 @@ public class WizardStep<E extends GenericMessageEvent, V> {
 	@Getter @Setter
 	private V
 			value;
+
+	@ConstructorProperties(value = { "name", "embed", "eventClass", "valueClass", "pointer" })
+	public WizardStep(String name, AEmbed embed, Class<E> eventClass, Class<V> valueClass, WizardPointer<WizardRunnable<E, V>> pointer) {
+		this.name = name;
+		this.embed = embed;
+		this.eventClass = eventClass;
+		this.valueClass = valueClass;
+		this.pointer = pointer;
+	}
 	
 	protected void message(MessageChannel channel) {
 		message = embed.send(channel);

@@ -37,11 +37,15 @@ public interface WizardPointer<T> {
 		
 	}
 	
-	@RequiredArgsConstructor(onConstructor = @_({ @ConstructorProperties(value = { "field" }) }))
 	public class FieldPointer<T> implements WizardPointer<T> {
 		
 		final Field
 				field;
+
+		@ConstructorProperties({ "field" })
+		public FieldPointer(Field field) {
+			this.field = field;
+		}
 		
 		@SuppressWarnings("unchecked")
 		@Override @SneakyThrows
@@ -51,11 +55,15 @@ public interface WizardPointer<T> {
 		
 	}
 	
-	@RequiredArgsConstructor(onConstructor = @_({ @ConstructorProperties(value = { "t" }) }))
 	public class ObjectPointer<T> implements WizardPointer<T> {
 		
 		final T
 				t;
+
+		@ConstructorProperties({ "t" })
+		public ObjectPointer(T t) {
+			this.t = t;
+		}
 
 		@Override
 		public T get() {

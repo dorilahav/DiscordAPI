@@ -19,18 +19,17 @@ import net.dv8tion.jda.core.events.message.GenericMessageEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 
 @JsonTypeInfo(use = Id.CLASS)
-@RequiredArgsConstructor(onConstructor = @_({ @ConstructorProperties(value = { "user", "channel", "pointer" }) }))
 public class Wizard implements Identifiable {
 	
 	private final String
 			id = UUID.randomUUID().toString();
 	
 	@Getter @NonNull
-	private User
+	private final User
 			user;
 	
 	@Getter @NonNull
-	private MessageChannel
+	private final MessageChannel
 			channel;
 	
 	@JsonIgnore
@@ -44,6 +43,13 @@ public class Wizard implements Identifiable {
 	@Override
 	public String getId() {
 		return id;
+	}
+
+	@ConstructorProperties(value = { "user", "channel", "pointer" })
+	public Wizard(User user, MessageChannel channel, WizardPointer<? extends WizardEndRunnable> pointer) {
+		this.user = user;
+		this.channel = channel;
+		this.pointer = pointer;
 	}
 	
 	public void addStep(@NonNull WizardStep<?, ?> step) {
