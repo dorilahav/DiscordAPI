@@ -1,7 +1,9 @@
 package com.dorilahav.api.jackson.deserializers;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,7 +20,7 @@ public class OffsetDateTimeDeserializer extends StdDeserializer<OffsetDateTime> 
 
 	@Override
 	public OffsetDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-		return OffsetDateTime.parse(p.getText());
+		return OffsetDateTime.ofInstant(Instant.ofEpochMilli(p.getValueAsLong()), ZoneOffset.UTC);
 	}
 
 }

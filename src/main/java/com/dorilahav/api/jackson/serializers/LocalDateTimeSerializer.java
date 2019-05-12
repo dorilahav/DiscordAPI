@@ -1,7 +1,9 @@
 package com.dorilahav.api.jackson.serializers;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -17,7 +19,7 @@ public class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
 
 	@Override
 	public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-		gen.writeString(value.toString());
+		gen.writeNumber(value.toInstant(ZoneOffset.UTC).toEpochMilli());
 	}
 
 }

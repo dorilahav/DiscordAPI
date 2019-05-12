@@ -19,7 +19,7 @@ public class InstantDeserializer extends StdDeserializer<Instant> {
 
 	@Override
 	public Instant deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-		return Instant.ofEpochMilli(((JsonNode) p.readValueAsTree()).longValue());
+		return Instant.ofEpochMilli(p.getValueAsLong());
 	}
 
 }

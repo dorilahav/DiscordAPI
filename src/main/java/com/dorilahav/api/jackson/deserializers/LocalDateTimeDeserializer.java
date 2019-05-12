@@ -1,12 +1,14 @@
 package com.dorilahav.api.jackson.deserializers;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
 	
@@ -18,7 +20,7 @@ public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
 
 	@Override
 	public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-		return LocalDateTime.parse(p.getText());
+		return LocalDateTime.ofInstant(Instant.ofEpochMilli(p.getValueAsLong()), ZoneOffset.UTC);
 	}
 	
 }
