@@ -20,96 +20,104 @@ import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 
 @JsonTypeInfo(use = Id.CLASS)
 public class Wizard implements Identifiable {
-	
-	private final String
-			id = UUID.randomUUID().toString();
-	
-	@Getter @NonNull
-	private final User
-			user;
-	
-	@Getter @NonNull
-	private final MessageChannel
-			channel;
-	
-	@JsonIgnore
-	private final WizardPointer<? extends WizardEndRunnable>
-			pointer;
-	
-	@Getter
-	private List<WizardStep<?, ?>>
-			steps = new ArrayList<>();
-	
-	@Override
-	public String getId() {
-		return id;
-	}
 
-	@ConstructorProperties(value = { "user", "channel", "pointer" })
-	public Wizard(User user, MessageChannel channel, WizardPointer<? extends WizardEndRunnable> pointer) {
-		this.user = user;
-		this.channel = channel;
-		this.pointer = pointer;
-	}
-	
-	public void addStep(@NonNull WizardStep<?, ?> step) {
-		
-		if (getStep(step.getName()) != null)
-			throw new IllegalArgumentException("A step with the name \"" + step.getName() + "\" already exists!");
-		
-		this.steps.add(step);
-	}
-	
-	public void start() {
-		if (steps.isEmpty())
-			throw new IllegalStateException("No steps found.");
-		
-		WizardStep<?, ?> step = steps.get(0);
-		step.message(channel);
-	}
-	
-	public boolean handle(@NonNull GenericMessageEvent e) {
-		
-		WizardStep<?, ?> step = next();
-		
-		if (step == null) {
-			pointer.get().run(this);
-			return false;
-		}
-		
-		if (!step.getEventClass().isInstance(e))
-			return false;
-		
-		if (e instanceof MessageReactionAddEvent && !step.getMessage().getId().equals(e.getMessageId()))
-			return false;
-		
-		step.handle(e);
-		
-		if (step.getValue() == null)
-			return false;
-		
-		step = next();
-		
-		if (step == null) {
-			pointer.get().run(this);
-			return false;
-		}
-		
-		step.message(e.getChannel());
-		
-		return true;
-	}
-	
-	public WizardStep<?, ?> getStep(@NonNull String name) {
-		return this.steps.stream().filter(step -> step.getName().equals(name)).findFirst().orElse(null);
-	}
-	
-	public WizardStep<?, ?> next() {
-		return steps.stream().filter(s -> s.getValue() == null).findFirst().orElse(null);
-	}
-	
-	public boolean check(@NonNull User user, @NonNull MessageChannel channel) {
-		return this.user.equals(user) && this.channel.equals(channel);
-	}
+    private final String
+            id = UUID.randomUUID().toString();
+
+    @Getter
+    @NonNull
+    private final User
+            user;
+
+    @Getter
+    @NonNull
+    private final MessageChannel
+            channel;
+
+    @JsonIgnore
+    private final WizardPointer<? extends WizardEndRunnable>
+            pointer;
+
+    @Getter
+    private List<WizardStep<?, ?>>
+            steps = new ArrayList<>();
+
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+
+    @ConstructorProperties(value = {"user", "channel", "pointer"})
+    public Wizard(User user, MessageChannel channel, WizardPointer<? extends WizardEndRunnable> pointer) {
+        this.user = user;
+        this.channel = channel;
+        this.pointer = pointer;
+    }
+
+    public void addStep(@NonNull WizardStep<?, ?> step) {
+
+        if (getStep(step.getName()) != null)
+            throw new IllegalArgumentException("A step with the name \"" + step.getName() + "\" already exists!");
+
+        this.steps.add(step);
+    }
+
+
+    public void start() {
+        if (steps.isEmpty())
+            throw new IllegalStateException("No steps found.");
+
+        WizardStep<?, ?> step = steps.get(0);
+        step.message(channel);
+    }
+
+
+    public boolean handle(@NonNull GenericMessageEvent e) {
+
+        WizardStep<?, ?> step = next();
+
+        if (step == null) {
+            pointer.get().run(this);
+            return false;
+        }
+
+        if (!step.getEventClass().isInstance(e))
+            return false;
+
+        if (e instanceof MessageReactionAddEvent && !step.getMessage().getId().equals(e.getMessageId()))
+            return false;
+
+        step.handle(e);
+
+        if (step.getValue() == null)
+            return false;
+
+        step = next();
+
+        if (step == null) {
+            pointer.get().run(this);
+            return false;
+        }
+
+        step.message(e.getChannel());
+
+        return true;
+    }
+
+
+    public WizardStep<?, ?> getStep(@NonNull String name) {
+        return this.steps.stream().filter(step -> step.getName().equals(name)).findFirst().orElse(null);
+    }
+
+    public WizardStep<?, ?> next() {
+        return steps.stream().filter(s -> s.getValue() == null).findFirst().orElse(null);
+    }
+
+
+    public boolean check(@NonNull User user, @NonNull MessageChannel channel) {
+        return this.user.equals(user) && this.channel.equals(channel);
+    }
 
 }

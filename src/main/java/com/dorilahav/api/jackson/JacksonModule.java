@@ -14,17 +14,17 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 public class JacksonModule extends SimpleModule {
 
-	private static final long serialVersionUID = 6537931591338424693L;
-	
-	public JacksonModule() {
-		addDeserializer(Instant.class, new InstantDeserializer());
-		addSerializer(new InstantSerializer());
-		
-		addDeserializer(OffsetDateTime.class, new OffsetDateTimeDeserializer());
-		addSerializer(new OffsetDateTimeSerializer());
-		
-		addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
-		addSerializer(new LocalDateTimeSerializer());
-	}
+    private static final long serialVersionUID = 6537931591338424693L;
+
+    public JacksonModule() {
+        addDeserializer(Instant.class, new InstantDeserializer());
+        addSerializer(new InstantSerializer());
+
+        addDeserializer(OffsetDateTime.class, new OffsetDateTimeDeserializer());
+        addSerializer(new OffsetDateTimeSerializer());
+
+        addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
+        addSerializer(new LocalDateTimeSerializer());
+    }
 
 }

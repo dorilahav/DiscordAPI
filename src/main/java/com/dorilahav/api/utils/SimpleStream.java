@@ -10,18 +10,19 @@ import lombok.NonNull;
 
 @AllArgsConstructor
 public class SimpleStream<T> {
-	
-	@Getter @NonNull
-	private final Stream<T>
-		stream;
-		
-	public SimpleStream(Collection<T> collection) {
-		this(collection.stream());
-		
-	}
-	
-	public T getFirstOrNull(@NonNull Predicate<T> predicate) {
-		return stream.filter(predicate).limit(1).findFirst().orElse(null);
-	}
-	
+
+    @Getter
+    @NonNull
+    private final Stream<T>
+            stream;
+
+    public SimpleStream(Collection<T> collection) {
+        this(collection.stream());
+
+    }
+
+    public T getFirstOrNull(@NonNull Predicate<T> predicate) {
+        return stream.filter(predicate).limit(1).findFirst().orElse(null);
+    }
+
 }

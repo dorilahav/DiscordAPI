@@ -7,21 +7,21 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public class CommandWrapper {
-	
-	@Getter
-	private final String
-			label;
-	
-	@Getter
-	private final List<String>
-			aliases;
-	
-	@Getter
-	private final CommandExecutor
-			commandExecutor;
-	
-	@Getter
-	private final CommandType
-			commandType;
+
+    @Getter
+    private final String
+            label;
+
+    @Getter
+    private final List<String>
+            aliases;
+
+    @Getter
+    private final CommandExecutor
+            commandExecutor;
+
+    @Getter
+    private final CommandType
+            commandType;
 
 }

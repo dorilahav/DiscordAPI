@@ -12,64 +12,66 @@ import lombok.SneakyThrows;
 
 @FunctionalInterface
 public interface WizardPointer<T> {
-	
-	T get();
-	
-	public class ClassPointer<T> implements WizardPointer<T> {
-		
-		final Class<T>
-				clazz;
-		
-		final Object[]
-				args;
-		
-		@JsonCreator
-		@ConstructorProperties(value = { "clazz", "args" })
-		public ClassPointer(Class<T> clazz, Object... args) {
-			this.clazz = clazz;
-			this.args = args;
-		}
-		
-		@Override @SneakyThrows
-		public T get() {
-			return ConstructorUtils.invokeConstructor(clazz, args);
-		}
-		
-	}
-	
-	public class FieldPointer<T> implements WizardPointer<T> {
-		
-		final Field
-				field;
 
-		@ConstructorProperties({ "field" })
-		public FieldPointer(Field field) {
-			this.field = field;
-		}
-		
-		@SuppressWarnings("unchecked")
-		@Override @SneakyThrows
-		public T get() {
-			return (T) field.get(null);
-		}
-		
-	}
-	
-	public class ObjectPointer<T> implements WizardPointer<T> {
-		
-		final T
-				t;
+    T get();
 
-		@ConstructorProperties({ "t" })
-		public ObjectPointer(T t) {
-			this.t = t;
-		}
+    public class ClassPointer<T> implements WizardPointer<T> {
 
-		@Override
-		public T get() {
-			return t;
-		}
-		
-	}
+        final Class<T>
+                clazz;
+
+        final Object[]
+                args;
+
+        @JsonCreator
+        @ConstructorProperties(value = {"clazz", "args"})
+        public ClassPointer(Class<T> clazz, Object... args) {
+            this.clazz = clazz;
+            this.args = args;
+        }
+
+        @Override
+        @SneakyThrows
+        public T get() {
+            return ConstructorUtils.invokeConstructor(clazz, args);
+        }
+
+    }
+
+    public class FieldPointer<T> implements WizardPointer<T> {
+
+        final Field
+                field;
+
+        @ConstructorProperties({"field"})
+        public FieldPointer(Field field) {
+            this.field = field;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        @SneakyThrows
+        public T get() {
+            return (T) field.get(null);
+        }
+
+    }
+
+    public class ObjectPointer<T> implements WizardPointer<T> {
+
+        final T
+                t;
+
+        @ConstructorProperties({"t"})
+        public ObjectPointer(T t) {
+            this.t = t;
+        }
+
+        @Override
+        public T get() {
+            return t;
+        }
+
+    }
 
 }

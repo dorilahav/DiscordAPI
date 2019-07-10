@@ -9,12 +9,14 @@ import lombok.experimental.Delegate;
 @RequiredArgsConstructor
 public class Prefix implements CharSequence {
 
-	@JsonValue @Getter @Delegate
+    @JsonValue
+    @Getter
+    @Delegate
     final String
-        prefix;
-	
+            prefix;
+
     public String get() {
         return prefix;
     }
-    
+
 }

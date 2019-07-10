@@ -9,15 +9,15 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 public class OffsetDateTimeSerializer extends StdSerializer<OffsetDateTime> {
 
-	private static final long serialVersionUID = 5191653172894008036L;
-	
-	public OffsetDateTimeSerializer() {
-		super(OffsetDateTime.class);
-	}
+    private static final long serialVersionUID = 5191653172894008036L;
 
-	@Override
-	public void serialize(OffsetDateTime value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-		gen.writeNumber(value.toInstant().toEpochMilli());
-	}
+    public OffsetDateTimeSerializer() {
+        super(OffsetDateTime.class);
+    }
+
+    @Override
+    public void serialize(OffsetDateTime value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+        gen.writeNumber(value.toInstant().toEpochMilli());
+    }
 
 }

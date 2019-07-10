@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Configurable {
-	
-	String key() default "";
-	
+
+    String key() default "";
+
 }

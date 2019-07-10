@@ -8,9 +8,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ConfigFile {
-	
-	String name();
-	
-	String path() default "";
+
+    String name();
+
+    String path() default "";
 
 }

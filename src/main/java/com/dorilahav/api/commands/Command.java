@@ -8,15 +8,15 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Command {
-	
-	String label();
-	
-	String[] aliases() default {};
-	
-	CommandType type() default CommandType.PUBLIC;
-	
-	boolean processFlags() default false;
-	
-	String usage() default "";
-	
+
+    String label();
+
+    String[] aliases() default {};
+
+    CommandType type() default CommandType.PUBLIC;
+
+    boolean processFlags() default false;
+
+    String usage() default "";
+
 }

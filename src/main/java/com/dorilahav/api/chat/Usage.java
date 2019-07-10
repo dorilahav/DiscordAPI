@@ -9,15 +9,18 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@RequiredArgsConstructor @NoArgsConstructor
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class Usage {
-	
-	@Getter @Setter @NonNull
-	private String
-		mainUsage;
-	
-	@Getter
-	private Map<String, String>
-		usages = new HashMap<>();
-		
+
+    @Getter
+    @Setter
+    @NonNull
+    private String
+            mainUsage;
+
+    @Getter
+    private Map<String, String>
+            usages = new HashMap<>();
+
 }

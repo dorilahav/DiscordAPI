@@ -11,15 +11,15 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 public class InstantDeserializer extends StdDeserializer<Instant> {
 
-	private static final long serialVersionUID = -143035789569400130L;
+    private static final long serialVersionUID = -143035789569400130L;
 
-	public InstantDeserializer() {
-		super(Instant.class);
-	}
+    public InstantDeserializer() {
+        super(Instant.class);
+    }
 
-	@Override
-	public Instant deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-		return Instant.ofEpochMilli(p.getValueAsLong());
-	}
+    @Override
+    public Instant deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+        return Instant.ofEpochMilli(p.getValueAsLong());
+    }
 
 }
