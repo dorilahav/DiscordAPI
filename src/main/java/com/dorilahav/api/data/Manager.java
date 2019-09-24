@@ -129,7 +129,12 @@ public class Manager<T extends Identifiable> {
 
     public void deleteMany(@NonNull Bson filter) {
         collection.getCollection().deleteMany(filter);
+    }
 
+    public void replace(T item, T newItem) {
+        collection.findOneAndReplace(Filters.eq(idName, item.getId()), newItem);
+        cache.remove(item);
+        cache.add(newItem);
     }
 
 }
