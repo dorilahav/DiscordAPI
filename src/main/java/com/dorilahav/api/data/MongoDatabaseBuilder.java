@@ -3,8 +3,10 @@ package com.dorilahav.api.data;
 import java.util.Map;
 
 import com.dorilahav.api.utils.MapBuilder;
+import com.mongodb.ConnectionString;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 
 import lombok.NonNull;
